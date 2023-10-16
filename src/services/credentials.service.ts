@@ -67,3 +67,27 @@ export async function saveCredentials(
 
   return credentialsId;
 }
+
+export async function getAllCredentials(userId: string) {
+  const { Items: credentials } = await database
+    .query({
+      TableName: process.env.TABLE_NAME as string,
+      KeyConditionExpression: 'PK = :userId AND begins_with(SK, :prefix)',
+      ExpressionAttributeValues: {
+        ':userId': `user#${userId}`,
+        ':prefix': 'credentials#',
+      },
+    })
+    .promise();
+
+  return credentials as CredentialsItem[];
+}
+
+export function createCredentailsResponse(credentials: CredentialsItem) {
+  return {
+    id: credentials.SK.replace('credentials#', ''),
+    username: credentials.username,
+    password: credentials.password,
+    domain: credentials.domain,
+  };
+}
