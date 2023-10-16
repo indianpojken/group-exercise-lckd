@@ -36,6 +36,12 @@ functions:
       - httpApi:
           path: /api/user/register
           method: POST
+  saveCredentials:
+    handler: src/functions/credentials/saveCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials
+          method: POST
 
 resources:
   Resources:
