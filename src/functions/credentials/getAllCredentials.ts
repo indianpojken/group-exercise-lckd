@@ -20,7 +20,7 @@ async function lambda(
     event.auth.userId
   );
 
-  return createResponse(statusCodes.created, {
+  return createResponse(statusCodes.ok, {
     status: 'success',
     data: {
       credentials: credentials.map((credential) =>

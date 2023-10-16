@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
+import aes from 'crypto-js/aes';
 
 import { database } from './database.service.ts';
 import { ApiError } from '../errors/api.error.ts';
@@ -59,7 +60,9 @@ export async function saveCredentials(
         PK: `user#${userId}`,
         SK: `credentials#${credentialsId}`,
         username: credentials.username,
-        password: credentials.password,
+        password: aes
+          .encrypt(credentials.password, process.env.CRYPTO_SECRET as string)
+          .toString(),
         domain: credentials.domain,
       },
     })
