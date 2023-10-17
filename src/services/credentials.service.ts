@@ -30,14 +30,14 @@ export async function getUsersCredentialsById(
       TableName: process.env.TABLE_NAME as string,
       KeyConditionExpression: 'PK = :PK AND SK = :SK',
       ExpressionAttributeValues: {
-        ':PK': `username#${userId}`,
+        ':PK': `user#${userId}`,
         ':SK': `credentials#${credentialsId}`,
       },
       Limit: 1,
     })
     .promise();
 
-  if (credentials) {
+  if (credentials?.length) {
     return credentials as unknown as CredentialsItem;
   } else {
     throw new ApiError(statusCodes.notFound, {
@@ -93,4 +93,13 @@ export function createCredentailsResponse(credentials: CredentialsItem) {
     password: credentials.password,
     domain: credentials.domain,
   };
+}
+
+export async function deletePasswordCredentials(pk: string, sk: string) {
+  const params = {
+    TableName: process.env.TABLE_NAME as string,
+    Key: { PK: 'user#' + pk, SK: 'credentials#' + sk },
+  };
+  const response = await database.delete(params).promise();
+  return response;
 }

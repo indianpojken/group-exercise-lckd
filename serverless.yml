@@ -10,7 +10,7 @@ provider:
   httpApi:
     cors: true
   iam:
-    role: arn:aws:iam::964128208950:role/school
+    role: arn:aws:iam::702041077133:role/DynamoDB-Crud-Role
   deploymentMethod: direct
   environment:
     TABLE_NAME: lckd
@@ -50,6 +50,12 @@ functions:
       - httpApi:
           path: /api/credentials
           method: POST
+  deleteCredentials:
+    handler: src/functions/credentials/deleteCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials/{id}
+          method: DELETE
 
 resources:
   Resources:

@@ -29,7 +29,7 @@ async function lambda(
     credentials
   );
 
-  return createResponse(statusCodes.created, {
+  return createResponse(statusCodes.accepted, {
     status: 'success',
     data: { id },
   });
