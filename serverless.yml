@@ -15,6 +15,7 @@ provider:
   environment:
     TABLE_NAME: lckd
     USERNAME_INDEX: usernames
+    CRYPTO_SECRET: ${env:CRYPTO_SECRET}
     JWT_SECRET: ${env:JWT_SECRET}
 
 plugins:
@@ -35,6 +36,19 @@ functions:
     events:
       - httpApi:
           path: /api/user/register
+          method: POST
+
+  getAllCredentials:
+    handler: src/functions/credentials/getAllCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials
+          method: GET
+  saveCredentials:
+    handler: src/functions/credentials/saveCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials
           method: POST
 
 resources:
