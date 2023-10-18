@@ -10,11 +10,12 @@ provider:
   httpApi:
     cors: true
   iam:
-    role: arn:aws:iam::964128208950:role/school
+    role: ${env:LAMBDA_ROLE}
   deploymentMethod: direct
   environment:
     TABLE_NAME: lckd
     USERNAME_INDEX: usernames
+    CRYPTO_SECRET: ${env:CRYPTO_SECRET}
     JWT_SECRET: ${env:JWT_SECRET}
 
 plugins:
@@ -36,6 +37,31 @@ functions:
       - httpApi:
           path: /api/user/register
           method: POST
+
+  getAllCredentials:
+    handler: src/functions/credentials/getAllCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials
+          method: GET
+  saveCredentials:
+    handler: src/functions/credentials/saveCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials
+          method: POST
+  deleteCredentials:
+    handler: src/functions/credentials/deleteCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials/{id}
+          method: DELETE
+  updateCredentials:
+    handler: src/functions/credentials/updateCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials/{id}
+          method: PATCH
 
 resources:
   Resources:
