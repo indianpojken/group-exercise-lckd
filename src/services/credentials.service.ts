@@ -103,3 +103,24 @@ export async function deletePasswordCredentials(pk: string, sk: string) {
   const response = await database.delete(params).promise();
   return response;
 }
+
+export async function updatePasswordCredentials(
+  pk: string,
+  sk: string,
+  newPassword: string
+) {
+  const params = {
+    TableName: process.env.TABLE_NAME as string,
+    Key: { PK: 'user#' + pk, SK: 'credentials#' + sk },
+    UpdateExpression: 'set password = :newPassword',
+    ExpressionAttributeValues: {
+      ':newPassword': aes
+        .encrypt(newPassword, process.env.CRYPTO_SECRET as string)
+        .toString(),
+    },
+    ReturnValues: 'ALL_NEW',
+  };
+
+  const response = await database.update(params).promise();
+  return response;
+}

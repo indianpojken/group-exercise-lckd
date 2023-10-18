@@ -56,6 +56,12 @@ functions:
       - httpApi:
           path: /api/credentials/{id}
           method: DELETE
+  updateCredentials:
+    handler: src/functions/credentials/updateCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials/{id}
+          method: PATCH
 
 resources:
   Resources:
