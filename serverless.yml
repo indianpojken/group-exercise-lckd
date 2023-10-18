@@ -10,7 +10,7 @@ provider:
   httpApi:
     cors: true
   iam:
-    role: arn:aws:iam::702041077133:role/DynamoDB-Crud-Role
+    role: ${env:LAMBDA_ROLE}
   deploymentMethod: direct
   environment:
     TABLE_NAME: lckd

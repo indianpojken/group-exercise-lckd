@@ -27,6 +27,7 @@ async function lambda(
   const { userId: pk } = event.auth;
   const { id: sk } = event.pathParameters as unknown as Params;
   const { newPassword } = event.body as unknown as Body;
+
   if (!newPassword) throw new Error('Body must include `newPassword`');
 
   const user = await getUsersCredentialsById(pk, sk);
