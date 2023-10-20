@@ -46,6 +46,31 @@ export async function getUsersCredentialsById(
   }
 }
 
+export async function getAllUsersCredentialsById(
+  userId: string,
+  credentialsId: string
+) {
+  const { Items: credentials } = await database
+    .query({
+      TableName: process.env.TABLE_NAME as string,
+      KeyConditionExpression: 'PK = :PK AND SK = :SK',
+      ExpressionAttributeValues: {
+        ':PK': `username#${userId}`,
+        ':SK': `credentials#${credentialsId}`,
+      },
+      Limit: 1,
+    })
+    .promise();
+
+  if (credentials) {
+    return credentials as unknown as CredentialsItem;
+  } else {
+    throw new ApiError(statusCodes.notFound, {
+      message: `No password with the id: '${credentialsId}' was found`,
+    });
+  }
+}
+
 export async function saveCredentials(
   userId: string,
   credentials: Credentials

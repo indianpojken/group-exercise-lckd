@@ -37,7 +37,12 @@ functions:
       - httpApi:
           path: /api/user/register
           method: POST
-
+  getCredentials:
+    handler: src/functions/credentials/getCredentials.handler
+    events:
+      - httpApi:
+          path: /api/credentials/{credentialsId}
+          method: GET
   getAllCredentials:
     handler: src/functions/credentials/getAllCredentials.handler
     events:
